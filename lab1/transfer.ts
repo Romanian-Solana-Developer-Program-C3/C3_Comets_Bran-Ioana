@@ -14,7 +14,7 @@ const sender=getKeypairFromEnvironment("SECRET_KEY");
 
 const connection=new Connection(clusterApiUrl('devnet'));
 
-console.log(`🗝️Loaded our keypair securely, using an env file! Our public key is: ${sender.publicKey.toBase58()}`);
+console.log(`🗝️ Loaded our keypair securely, using an env file! Our public key is: ${sender.publicKey.toBase58()}`);
 
 const recipient=new PublicKey('47fKVddLDt6fHRvS5cT72TnPmvCxKka72QX48QTa3nb7');
 
@@ -27,3 +27,9 @@ const sendSolInstructions=SystemProgram.transfer({
     toPubkey: recipient,
     lamports: LAMPORTS_PER_SOL,
 });
+
+transaction.add(sendSolInstructions);
+
+const signature=await sendAndConfirmTransaction(connection, transaction,[sender,]);
+
+console.log(`✅ Transaction confirmed, signature: ${signature}`);
